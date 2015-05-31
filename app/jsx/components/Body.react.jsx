@@ -1,20 +1,17 @@
-const React = require('react');
+import React from 'react';
 
-
-class _Body {
+export class Body extends React.Component {
     getClassName() {
         return 'foo';
     }
-
 
     render() {
         const x = 'x';
 
         return (
-            <div className={`${x} ${this.getClassName()} bar`}>
+            <div className={'${x} ${this.getClassName()} bar'}>
                 Hello there!
             </div>
         );
     }
 }
-export const Body = React.createClass(_Body.prototype);

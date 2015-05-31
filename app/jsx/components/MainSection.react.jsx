@@ -1,15 +1,18 @@
-const React = require('react');
+
+import React from 'react';
 import {Body} from './Body.react.jsx';
+import {Compass} from './Compass.react.jsx';
+import {Coordinates} from './Coordinates.react.jsx';
 
 
-class _MainSection {
+export class MainSection extends React.Component {
     render() {
         return (
             <div>
-                <h1>Example of React with es6 and browserify</h1>
                 <Body />
+                <Compass ref="compass" />
+                <Coordinates ref="coordinates" />
             </div>
         );
     }
 }
-export const MainSection = React.createClass(_MainSection.prototype);
