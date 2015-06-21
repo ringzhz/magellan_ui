@@ -26,5 +26,7 @@ window.setInterval(function() {
 
         var s3Status = data.device.details.status;
         window.mainSection.refs.s3Status.setS3Status(s3Status);
+        //TODO: hehe. stop that
+        window.mainSection.refs.motorTuner.setMotorTuningEnabled(s3Status === 'Board Ready. Driver awaiting commands.');
     });
 }, 1000 / POLLING_RATE);

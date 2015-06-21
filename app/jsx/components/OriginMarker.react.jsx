@@ -14,6 +14,7 @@ export class OriginMarker extends Marker {
         this.props = {
             icon: OriginMarker.ICON
         };
+        this.icon = OriginMarker.ICON;
     }
 
     render() {
@@ -22,7 +23,7 @@ export class OriginMarker extends Marker {
                     position={this.state.position}
                     draggable={true}
                     onDragEnd={this.onDragend.bind(this)}
-                    icon={OriginMarker.ICON} />
+                    icon={this.icon} />
         );
     }
 

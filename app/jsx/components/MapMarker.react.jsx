@@ -46,7 +46,7 @@ export class MapMarker extends React.Component {
     static fromLocationHistory(locationHistory) {
         let locationMarkers =  (locationHistory || []).map((location) => {
             return (
-                <MapMarker position={location.position}
+                <Marker position={location.position}
                            icon={MapMarker.VISITED_ICON} />
             );
         });

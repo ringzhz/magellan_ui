@@ -22,10 +22,10 @@ export class MotorTuner extends React.Component {
             <div>
                 <h3>Motor Tuner</h3>
                 <label htmlFor="fromStall">Find Min Power: </label>
-                <button id="fromStall" onClick={this.fromStallClick.bind(this)} enabled={this.state.enabled}>From Stall</button>
+                <button id="fromStall" onClick={this.fromStallClick.bind(this)} disabled={!this.state.enabled}>From Stall</button>
                 <br />
                 <label htmlFor="inMotion">Find Min Power: </label>
-                <button id="inMotion" onClick={this.inMotionClick.bind(this)} enabled={this.state.enabled}>In Motion</button>
+                <button id="inMotion" onClick={this.inMotionClick.bind(this)} disabled={!this.state.enabled}>In Motion</button>
                 <table>
                     <tr>
                         <td>From Stall: </td>
@@ -38,6 +38,12 @@ export class MotorTuner extends React.Component {
                 </table>
             </div>
         );
+    }
+
+    setMotorTuningEnabled(flag) {
+        this.setState({
+            enabled: flag
+        });
     }
 
     inMotionClick() {

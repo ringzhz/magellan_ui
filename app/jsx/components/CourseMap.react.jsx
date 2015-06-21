@@ -43,9 +43,12 @@ export class CourseMap extends React.Component {
             position: newLocation,
             time: new Date()
         });
+        //FIXME
+        window.locationHistory = this.state.locationHistory;
         this.setState({
             coords: coords,
-            currentLocation: newLocation
+            currentLocation: newLocation,
+            locationHistory: this.state.locationHistory //hmm
         });
     }
     render () {
@@ -53,7 +56,8 @@ export class CourseMap extends React.Component {
         const googleMapsApi = "undefined" !== typeof google ? google.maps : null;
 
         let locationMarkers = MapMarker.fromLocationHistory(state.locationHistory);
-
+        //FIXME
+        window.locationMarkers = locationMarkers;
         return (
             <div className="theMap">
                 <h3 style={{width:'200px',textAlign:'center'}}>{this.state.coords.x},{this.state.coords.y}</h3>
@@ -69,8 +73,7 @@ export class CourseMap extends React.Component {
                     googleMapsApi={googleMapsApi}
                     zoom={19}
                     center={state.origin}>
-                    <OriginMarker position={state.origin}
-                        ref="originMarker"/>
+                    <OriginMarker position={state.origin} ref="originMarker" icon={MapMarker.ORIGIN_ICON}/>
                     {locationMarkers}
                 </GoogleMaps>
             </div>
