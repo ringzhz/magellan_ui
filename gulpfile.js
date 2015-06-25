@@ -29,8 +29,7 @@ var htmlFiles = 'app/**/*.html';
 var htmlBuild = dist;
 
 var vendorFiles = [
-    'bower_components/react/react-with-addons.js',
-    'node_modules/es6ify/node_modules/traceur/bin/traceur-runtime.js'];
+    'bower_components/react/react-with-addons.js'];
 var vendorBuild = dist + '/vendor';
 
 /** globals **/
@@ -70,7 +69,7 @@ gulp.task('browserify', function () {
 
 });
 
-gulp.task('server', function (next) {
+gulp.task('server', ['html'],function (next) {
     var server = connect();
     server.use(serveStatic(dist)).listen(PORT, next);
 });

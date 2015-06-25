@@ -15,7 +15,7 @@ export class Compass extends React.Component {
     //<polygon transform={"rotate("+this.state.angle+" 100 100)"}
     //         points="100,10 90,100 110,100" style={{fill:'orange',stroke:'black',strokeWidth:1}} />
     //<polygon transform={"rotate("+this.state.angle+" 100 100)"}
-    //         points="100,190 90,100 110,100" style={{fill:'none',stroke:'black',strokeWidth:0.5}} />
+    //         points="100, 190 90,100 110,100" style={{fill:'none',stroke:'black',strokeWidth:0.5}} />
     render() {
         return (
             <div className="compass">
@@ -32,7 +32,7 @@ export class Compass extends React.Component {
         );
     }
     setAngle(angle) {
-        var realAngle = (+this.state.initialHeading + angle) % 360.0;
+        var realAngle = ((+this.state.initialHeading) + (+angle)) % 360.0;
         this.setState({
             angle: realAngle
         });

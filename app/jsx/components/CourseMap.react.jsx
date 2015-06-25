@@ -6,7 +6,7 @@ import {OriginMarker} from './OriginMarker.react.jsx';
 const {update} = React.addons;
 
 // Values From: http://www.csgnetwork.com/degreelenllavcalc.html
-// @ 47.620487° Lat (Seattle)
+// @ 47.620487ï¿½ Lat (Seattle)
 // https://www.google.com/maps/@47.620467,-122.351169,19z
 const M_PER_DEGREE_LAT = 111182.90059994154;
 const M_PER_DEGREE_LNG = 75170.9948697914;

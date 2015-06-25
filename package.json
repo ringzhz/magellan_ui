@@ -1,6 +1,6 @@
 {
-  "name": "react-es6-browserify",
-  "version": "0.0.5",
+  "name": "magellan_ui",
+  "version": "0.0.1",
   "dependencies": {
     "chart.js": "^1.0.2",
     "react-chartjs": "^0.6.0",

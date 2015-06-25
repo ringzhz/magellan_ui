@@ -53,6 +53,8 @@ export class MapMarker extends React.Component {
         if(locationMarkers.length === 0) {
             locationMarkers = null;
         }
+        //FIXME
+        window.locationMarkers = locationMarkers;
         return locationMarkers;
     }
 

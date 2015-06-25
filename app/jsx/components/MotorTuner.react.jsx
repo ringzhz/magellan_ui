@@ -7,6 +7,12 @@ import React from 'react';
 //    yield i;
 //}
 
+//TODO: Something about this
+var PI_ADDR_WIN = 'http://192.168.0.126:3000';
+var PI_ADDR_UBUNTU = 'http://192.168.42.1:3000';
+
+var PI_ADDR = PI_ADDR_UBUNTU;
+
 export class MotorTuner extends React.Component {
     constructor() {
         super();
@@ -50,7 +56,7 @@ export class MotorTuner extends React.Component {
         console.log("In Motion");
         //TODO Make a Robit Object
         $.ajax({
-            url: 'http://192.168.0.126:3000/api/robots/cylon_magellan/commands/findInMotionPowerMin',
+            url: PI_ADDR + '/api/robots/cylon_magellan/commands/findInMotionPowerMin',
             method: 'POST',
             dataType: 'json',
             success: function (data) {
@@ -66,7 +72,7 @@ export class MotorTuner extends React.Component {
     fromStallClick() {
         console.log("From Stall");
         $.ajax({
-            url: 'http://192.168.0.126:3000/api/robots/cylon_magellan/commands/findFromStallPowerMin',
+            url: PI_ADDR + '/api/robots/cylon_magellan/commands/findFromStallPowerMin',
             method: 'POST',
             dataType: 'json',
             success: function (data) {
