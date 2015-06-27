@@ -11,7 +11,7 @@ const {update} = React.addons;
 const M_PER_DEGREE_LAT = 111182.90059994154;
 const M_PER_DEGREE_LNG = 75170.9948697914;
 
-const MAX_LOCATION_MARKERS = 20;
+const MAX_LOCATION_MARKERS = 100;
 
 export class CourseMap extends React.Component {
     constructor (args) {

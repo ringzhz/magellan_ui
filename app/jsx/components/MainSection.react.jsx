@@ -83,8 +83,8 @@ export class MainSection extends React.Component {
                 let cM = this.refs.courseMap;
                 let latestCoords = cM.latLngToMetersFromOrigin(cM.getLatestCoord());
 
-                let x = latestCoords.x + this.getRandomInRange(-1, 1);
-                let y = latestCoords.y + this.getRandomInRange(-1, 1);
+                let x = latestCoords.x + this.getRandomInRange(-1, 1.0);
+                let y = latestCoords.y + this.getRandomInRange(-1, 1.0);
                 if(x > 40) {
                     x = 40;
                 }

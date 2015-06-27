@@ -50,9 +50,13 @@ export class MapMarker extends React.Component {
         let len = locationHistory.length;
         let locationMarkers = (locationHistory || []).map((location) => {
             let icon = MapMarker.VISITED_ICON;
-            let coeff = ++i / len;
+            let coeff = ++i/len;
+            if (coeff < 0.4) {
+                coeff = 0.4;
+            }
             icon['scale'] = 4.5 * coeff;
-            icon['fillOpacity'] = coeff;
+            icon['fillOpacity'] = i == locationHistory.length ? 0.8 : (0.4 * coeff);
+
             return (
                 <Marker position={location.position}
                         icon={icon} />
@@ -84,8 +88,7 @@ export class MapMarker extends React.Component {
             fillColor: 'red',
             fillOpacity: .4,
             scale: 4.5,
-            strokeColor: 'white',
-            strokeWeight: 1
+            strokeWeight: 0
         };
         let icon = {};
         _.each(VISITED_ICON, (value, key) => {
