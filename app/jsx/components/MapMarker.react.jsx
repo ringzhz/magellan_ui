@@ -1,5 +1,6 @@
 import React from 'react/addons';
 import {GoogleMaps, Marker} from 'react-google-maps';
+import _ from 'lodash';
 
 export class MapMarker extends React.Component {
     /* TODO: Use JSDoc
@@ -28,6 +29,7 @@ export class MapMarker extends React.Component {
     }
 
     render() {
+        //FIXME
         window.wtf = this;
         window.React = React;
         return (
@@ -44,10 +46,16 @@ export class MapMarker extends React.Component {
     }
 
     static fromLocationHistory(locationHistory) {
-        let locationMarkers =  (locationHistory || []).map((location) => {
+        let i = 0;
+        let len = locationHistory.length;
+        let locationMarkers = (locationHistory || []).map((location) => {
+            let icon = MapMarker.VISITED_ICON;
+            let coeff = ++i / len;
+            icon['scale'] = 4.5 * coeff;
+            icon['fillOpacity'] = coeff;
             return (
                 <Marker position={location.position}
-                           icon={MapMarker.VISITED_ICON} />
+                        icon={icon} />
             );
         });
         if(locationMarkers.length === 0) {
@@ -71,7 +79,7 @@ export class MapMarker extends React.Component {
     }
 
     static get VISITED_ICON() {
-        return {
+        const VISITED_ICON = {
             path: google.maps.SymbolPath.CIRCLE,
             fillColor: 'red',
             fillOpacity: .4,
@@ -79,5 +87,10 @@ export class MapMarker extends React.Component {
             strokeColor: 'white',
             strokeWeight: 1
         };
+        let icon = {};
+        _.each(VISITED_ICON, (value, key) => {
+            icon[key] = value;
+        });
+        return icon;
     }
 }

@@ -11,8 +11,9 @@ const {update} = React.addons;
 const M_PER_DEGREE_LAT = 111182.90059994154;
 const M_PER_DEGREE_LNG = 75170.9948697914;
 
-export class CourseMap extends React.Component {
+const MAX_LOCATION_MARKERS = 20;
 
+export class CourseMap extends React.Component {
     constructor (args) {
         super(args);
 
@@ -30,42 +31,23 @@ export class CourseMap extends React.Component {
             }]
         };
     }
-    addLatestCoord(coords) {
-        let newLocation = {
-            lat: this.state.origin.lat + coords.y/M_PER_DEGREE_LAT,
-            lng: this.state.origin.lng + coords.x/M_PER_DEGREE_LNG
-        };
-        if(newLocation.lat == this.state.currentLocation.lat && newLocation.lng == this.state.currentLocation.lng) {
-            // didn't move.
-            return;
-        }
-        this.state.locationHistory.push({
-            position: newLocation,
-            time: new Date()
-        });
-        //FIXME
-        window.locationHistory = this.state.locationHistory;
-        this.setState({
-            coords: coords,
-            currentLocation: newLocation,
-            locationHistory: this.state.locationHistory //hmm
-        });
-    }
     render () {
         const {state} = this;
         const googleMapsApi = "undefined" !== typeof google ? google.maps : null;
 
         let locationMarkers = MapMarker.fromLocationHistory(state.locationHistory);
+
+        let formattedCoords = this.state.coords.x.toPrecision(2) + ',' + this.state.coords.y.toPrecision(2);
         //FIXME
         window.locationMarkers = locationMarkers;
         return (
             <div className="theMap">
-                <h3 style={{width:'200px',textAlign:'center'}}>{this.state.coords.x},{this.state.coords.y}</h3>
+                <h3>{formattedCoords}</h3>
                 <GoogleMaps
                     id="theMap"
                     containerProps={{
                       style: {
-                        width: "300px",
+                        width: "100%",
                         height: "500px"
                       }
                     }}
@@ -84,6 +66,49 @@ export class CourseMap extends React.Component {
         return {
             lat: 47.620505,
             lng: -122.351178
+        };
+    }
+
+    getLatestCoord() {
+        let locationHistory = this.state.locationHistory;
+        if(!locationHistory) {
+            return this.state.origin;
+        }
+        return locationHistory[locationHistory.length-1].position;
+    }
+    addLatestCoord(coords) {
+        let newLocation = this.metersFromOriginToLatLng(coords);
+        if(newLocation.lat == this.state.currentLocation.lat && newLocation.lng == this.state.currentLocation.lng) {
+            // didn't move.
+            return;
+        }
+        let locationHistory = this.state.locationHistory;
+        while(locationHistory.length > MAX_LOCATION_MARKERS) {
+            locationHistory.shift();
+        }
+        locationHistory.push({
+            position: newLocation,
+            time: new Date()
+        });
+        //FIXME
+        window.locationHistory = this.state.locationHistory;
+        this.setState({
+            coords: coords,
+            currentLocation: newLocation,
+            locationHistory: this.state.locationHistory //hmm
+        });
+    }
+
+    metersFromOriginToLatLng(mFromOrigin) {
+        return {
+            lat: this.state.origin.lat + mFromOrigin.y/M_PER_DEGREE_LAT,
+            lng: this.state.origin.lng + mFromOrigin.x/M_PER_DEGREE_LNG
+        }
+    }
+    latLngToMetersFromOrigin(latLng) {
+        return {
+            x: (latLng.lng - this.state.origin.lng)*M_PER_DEGREE_LNG,
+            y: (latLng.lat - this.state.origin.lat)*M_PER_DEGREE_LAT
         };
     }
 }

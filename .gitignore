@@ -2,3 +2,12 @@ node_modules
 bower_components
 dist
 .idea
+.name
+inspectionProfiles
+jsLibraryMappings.xml
+libraries
+magellan_ui.iml
+misc.xml
+modules.xml
+vcs.xml
+workspace.xml

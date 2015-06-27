@@ -5,7 +5,7 @@ export class Compass extends React.Component {
         super(props);
         this.defaultProps = {
             initialHeading: 0
-        }
+        };
         this.state = {
             initialHeading: 0,
             angle: 0
@@ -19,11 +19,13 @@ export class Compass extends React.Component {
     render() {
         return (
             <div className="compass">
-                <h3 style={{width:'200px',textAlign:'center'}}>{this.state.angle}&#xb0;</h3>
+                <h3>{this.state.angle}&#xb0;</h3>
                 <svg height="200" width="200">
-                    <circle cx="100" cy="100" r="95" stroke="black" strokeWidth="3" fill="none" />
+                    <circle cx="100" cy="100" r="95" stroke="black" strokeWidth="3" fill="#CCC" />
                     <polygon transform={"rotate("+this.state.angle+" 100 100)"}
-                             points="100,10 85,30 95,30 95,100 105,100 105,30 115,30" style={{fill:'red',stroke:'black',strokeWidth:'1'}} />
+                             points="100,10 97,30 95,30 95,100 105,100 105,30 103,30" style={{fill:'red',stroke:'black',strokeWidth:'1'}} />
+                    <polygon transform={"rotate("+(this.props.targetAngle || 0)+" 100 100)"}
+                             points="100,13 95,25 105,25" style={{fill:'black',stroke:'yellow',strokeWidth:'2'}} />
                 </svg>
                 <br />
                 <label htmlFor="InitialHeading">Initial Heading: </label>
