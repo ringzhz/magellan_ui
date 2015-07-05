@@ -5,6 +5,7 @@ import {CourseMap} from './CourseMap.react.jsx';
 import {MotorTuner} from './MotorTuner.react.jsx';
 import {S3Status} from './S3Status.react.jsx';
 import {TurnControls} from './TurnControls.react.jsx';
+import {ThreeDModel} from './ThreeDModel.react.jsx';
 
 
 //TODO: Something about this
@@ -30,6 +31,7 @@ export class MainSection extends React.Component {
         window.TC = TurnControls;
         return (
             <div className="main-section">
+                <ThreeDModel ref="3dModel"/>
                 <S3Status ref="s3Status"/>
                 <Compass ref="compass" targetAngle={this.state.targetAngle} />
                 <TurnControls ref="turnControls" onAngleInputChanged={this.onTargetAngleChange.bind(this)} />

@@ -56,7 +56,7 @@ export class TurnControls extends React.Component {
         );
 
         return (
-            <div className='turn-controls'>
+            <div className="turn-controls expandable">
                 <h3>Turn Controls</h3>
                 <button className="expando-button" onClick={this.expando.bind(this)}>{buttonLabel}</button>
                 {content}

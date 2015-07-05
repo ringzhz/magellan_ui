@@ -9,7 +9,7 @@ export class SliderTextInput extends React.Component {
             value: this.props.initialValue || 0
         }
 
-        this.props.className = (this.props.className || '') + ' slider-text-input';
+        this._className = (this.props.className || '') + ' slider-text-input';
     }
 
 
@@ -26,7 +26,7 @@ export class SliderTextInput extends React.Component {
 
     render() {
         return (
-            <div className={this.props.className}>
+            <div className={this._className}>
                 <label>{this.props.label}</label>
                 <input ref='text'
                        type='text'
