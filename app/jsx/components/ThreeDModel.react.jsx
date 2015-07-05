@@ -1,12 +1,12 @@
 import React from 'react';
 import {THREE} from 'three';
-import wut from 'react-three';
-let {Scene,PerspectiveCamera,Object3D,Mesh,Line} = wut;
-window.wut=wut;
+import {Scene,PerspectiveCamera,Object3D,Mesh,Line} from 'react-three';
 var assetpath = function (filename) {
     return '/vendor/' + filename;
 };
 
+// thx Izzimach.
+// stolen largely from https://github.com/Izzimach/react-three/blob/master/examples/cupcake/cupcake.js
 let boxgeometry = new THREE.BoxGeometry(400, 250, 100);
 let cylindergeometry = new THREE.CylinderGeometry(100, 100, 100, 50, 50, false);
 let MeshFactory = React.createFactory(Mesh);
@@ -118,8 +118,6 @@ export class ThreeDModel extends React.Component {
                 {toggleContents}
             </div>
         );
-
-
     }
 
     expando() {

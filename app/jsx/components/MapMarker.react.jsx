@@ -48,17 +48,24 @@ export class MapMarker extends React.Component {
     static fromLocationHistory(locationHistory) {
         let i = 0;
         let len = locationHistory.length;
+        //TODO: can you control z-index?
         let locationMarkers = (locationHistory || []).map((location) => {
             let icon = MapMarker.VISITED_ICON;
             let coeff = ++i/len;
+            let className = 'location-history-marker';
             if (coeff < 0.4) {
                 coeff = 0.4;
             }
             icon['scale'] = 4.5 * coeff;
             icon['fillOpacity'] = i == locationHistory.length ? 0.8 : (0.4 * coeff);
-
+            if(i == len) {
+                icon.strokeColor = 'white';
+                icon.strokeWeight = 1;
+                className = 'current-location-marker';
+            }
             return (
-                <Marker position={location.position}
+                <Marker className={className}
+                        position={location.position}
                         icon={icon} />
             );
         });
