@@ -8,4 +8,3 @@ const render = () => React.render(
 );
 
 window.mainSection = render();
-window.mainSection.startDataPoller();

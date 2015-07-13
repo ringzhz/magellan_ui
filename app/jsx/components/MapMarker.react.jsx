@@ -29,16 +29,6 @@ export class MapMarker extends React.Component {
     }
 
     render() {
-        //FIXME
-        window.wtf = this;
-        window.React = React;
-        return (
-            <Marker className={this.className}
-                    position={this.state.position}
-                    draggable={this.draggable}
-                    onDragEnd={this.onDragend.bind(this)}
-                    icon={this.icon} />
-        );
     }
 
     onDragend(event) {
@@ -51,17 +41,19 @@ export class MapMarker extends React.Component {
         //TODO: can you control z-index?
         let locationMarkers = (locationHistory || []).map((location) => {
             let icon = MapMarker.VISITED_ICON;
-            let coeff = ++i/len;
+            let coeff = (++i*2/len)/2;
             let className = 'location-history-marker';
             if (coeff < 0.4) {
                 coeff = 0.4;
             }
-            icon['scale'] = 4.5 * coeff;
-            icon['fillOpacity'] = i == locationHistory.length ? 0.8 : (0.4 * coeff);
             if(i == len) {
-                icon.strokeColor = 'white';
-                icon.strokeWeight = 1;
+                icon['strokeColor'] = 'white';
+                icon['strokeWeight'] = 1;
                 className = 'current-location-marker';
+                icon['fillOpacity'] = 0.8;
+            } else {
+                icon['scale'] = 4.5 * coeff;
+                icon['fillOpacity'] = 0.7 * coeff;
             }
             return (
                 <Marker className={className}
@@ -77,6 +69,16 @@ export class MapMarker extends React.Component {
         return locationMarkers;
     }
 
+    static fromWaypoints(waypoints) {
+        return waypoints.map((waypoint) => {
+            return (
+                <Marker className="waypoint-marker"
+                    position={waypoint}
+                    icon={MapMarker.WAYPOINT_ICON} />
+            );
+        });
+    }
+
     // constants here to EOF. ->
     static get ORIGIN_ICON() {
         return {
@@ -85,8 +87,24 @@ export class MapMarker extends React.Component {
             fillOpacity: .4,
             scale: 4.5,
             strokeColor: 'white',
+            strokeWeight: 1,
+            draggable: true
+        };
+    }
+    static get WAYPOINT_ICON() {
+        const VISITED_ICON = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'orange',
+            fillOpacity: .9,
+            scale: 4.5,
+            strokeColor: 'white',
             strokeWeight: 1
         };
+        let icon = {};
+        _.each(VISITED_ICON, (value, key) => {
+            icon[key] = value;
+        });
+        return icon;
     }
 
     static get VISITED_ICON() {

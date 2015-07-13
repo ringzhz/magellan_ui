@@ -28,7 +28,8 @@ export class CourseMap extends React.Component {
             locationHistory: [{
                 time: new Date(),
                 position: CourseMap.STARTING_COORDS
-            }]
+            }],
+            waypoints: []
         };
     }
     render () {
@@ -36,10 +37,9 @@ export class CourseMap extends React.Component {
         const googleMapsApi = "undefined" !== typeof google ? google.maps : null;
 
         let locationMarkers = MapMarker.fromLocationHistory(state.locationHistory);
-
+        let waypointMarkers = MapMarker.fromWaypoints(state.waypoints);
         let formattedCoords = this.state.coords.x.toPrecision(2) + ',' + this.state.coords.y.toPrecision(2);
-        //FIXME
-        window.locationMarkers = locationMarkers;
+
         return (
             <div className="theMap">
                 <h3>{formattedCoords}</h3>
@@ -53,10 +53,20 @@ export class CourseMap extends React.Component {
                     }}
                     ref="map"
                     googleMapsApi={googleMapsApi}
+                    tilt={0}
                     zoom={19}
+                    mapTypeId={google.maps.MapTypeId.SATELLITE}
+                    draggable={false}
+                    panControl={false}
+                    zoomControl={false}
+                    scrollwheel={false}
+                    navigationControl={false}
+                    streetViewControl={false}
+                    mapTypeControl={false}
                     center={state.origin}>
                     <OriginMarker position={state.origin} ref="originMarker" icon={MapMarker.ORIGIN_ICON}/>
                     {locationMarkers}
+                    {waypointMarkers}
                 </GoogleMaps>
             </div>
         );
@@ -110,5 +120,8 @@ export class CourseMap extends React.Component {
             x: (latLng.lng - this.state.origin.lng)*M_PER_DEGREE_LNG,
             y: (latLng.lat - this.state.origin.lat)*M_PER_DEGREE_LAT
         };
+    }
+    setWaypoints(waypoints) {
+        this.setState({waypoints});
     }
 }

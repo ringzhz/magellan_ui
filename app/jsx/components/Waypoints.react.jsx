@@ -1,96 +1,65 @@
-import React from "react/addons";
-import {GoogleMaps, Marker} from "react-google-maps";
+import React from 'react/addons';
+import {GoogleMaps, Marker} from 'react-google-maps';
+import _ from 'lodash';
 
-const LOCATION_HISTORY_MAX_LENGTH = 100;
-
-export class Coordinates extends React.Component {
+export class Waypoints extends React.Component {
 
     constructor (args) {
         super(args);
         this.state = {
-            markers: [],
-            origin: SEATTLE_CENTER_FIELD_COORDS,
-            currentLocation: SEATTLE_CENTER_FIELD_COORDS,
-            coords: {
-                x: 0,
-                y: 0
-            },
-            waypoints :[ SEATTLE_CENTER_FIELD_COORDS ]
+            waypoints :[{
+                lat: 47.60,
+                lng: -122.35
+            },{
+                lat: 47.620505,
+                lng: -122.351178
+            },{
+                lat: 47.6207,
+                lng: -122.3511
+            }]
         };
-    }
-    setCoords(coords) {
-        let newLocation = {
-            lat: this.state.origin.lat + coords.y/M_PER_DEGREE.lat,
-            lng: this.state.origin.lng + coords.x/M_PER_DEGREE.lng
-        };
-        if(newLocation.lat == this.state.currentLocation.lat && newLocation.lng == this.state.currentLocation.lng) {
-            // didn't move.
-            return;
-        }
-        this.state.markers.unshift({
-            position: newLocation
-        });
-        this.setState({
-            coords: coords,
-            currentLocation: newLocation
-        });
     }
     render () {
-        const {state} = this;
-        let width = getComputedStyle(document.body).width;
         return (
             <div>
-                <h3 style={{width:'200px',textAlign:'center'}}>{this.state.coords.x},{this.state.coords.y}</h3>
-                <GoogleMaps containerProps={{
-                              style: {
-                                width: width,
-                                height: '500px'
-                              }
-                            }}
-                            ref='map'
-                            googleMapsApi={ window.google && google.maps || null}
-                            zoom={19}
-                            center={this.state.origin}>
-                    {state.markers.map(getMarkerMapperWithIcon(Coordinates.LOCATION_MARKER))}
-
-                    {state.waypoints.map(getMarkerMapperWithIcon(Coordinates.WAYPOINT_MARKER))}
-                </GoogleMaps>
+                <h3 style={{width:'200px',textAlign:'center'}}>waypoints</h3>
+                <textarea ref="textArea" onChange={this.textAreaDidChange.bind(this)} />
+                <ol>
+                    {_.map(this.state.waypoints, this.renderWaypoint)}
+                </ol>
             </div>
         );
+    }
 
-        function getMarkerMapperWithIcon(icon)
-        {
-            return (marker, index) => {
-                icon.fillOpacity = 1/(index+1);
-                return (
-                    <Marker
-                        position={marker.position}
-                        key={marker.key}
-                        icon={icon}/>
-                );
+    textAreaDidChange(evt) {
+        let txt = evt.target.value;
+        let lines = txt.split('\n');
+        let waypoints = _.chain(lines).map((line) => {
+            let coords = line.split(',');
+            if(coords && coords.length === 2) {
+                try {
+                    return {
+                        lat: Number(coords[0]),
+                        lng: Number(coords[1])
+                    };
+                } catch(error) {
+                    console.log('Couldn\'t parse coordinate: '+coords);
+                    console.error(error);
+                }
+                return null;
             }
+        }).filter((coord) => {
+            return !!coord;
+        }).value();
+        this.setState({waypoints});
+        if('function' === typeof this.props.onWaypointsChange) {
+            this.props.onWaypointsChange(waypoints);
         }
     }
 
-    static get LOCATION_MARKER () {
-        return {
-            path: window.google ? google.maps.SymbolPath.CIRCLE : null,
-            fillColor: 'red',
-            scale: 2.5,
-            fillOpacity: 1,
-            strokeColor: 'white',
-            strokeWeight: 1
-        };
-    }
-
-    static get WAYPOINT_MARKER () {
-        return {
-            path: window.google ? google.maps.SymbolPath.CIRCLE : null,
-            fillColor: 'orange',
-            scale: 4.5,
-            fillOpacity: 1,
-            strokeColor: 'white',
-            strokeWeight: 1
-        };
+    renderWaypoint(waypoint) {
+        return (
+            <li className="waypoint">{waypoint.lat}, {waypoint.lng}</li>
+        );
     }
 }
