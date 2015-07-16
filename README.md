@@ -1,5 +1,10 @@
 # A UI For the Robo Magellan Competition.
 
+Requires:
+
+1. <a href="https://nodejs.org/">node/npm</a> 
+1. gulp : `npm install -g gulp`
+
 In install dir:
 
 1. `npm install`
