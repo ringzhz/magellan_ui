@@ -8,13 +8,13 @@ export class Waypoints extends React.Component {
         super(args);
         this.state = {
             waypoints :[{
-                lat: 47.60,
-                lng: -122.35
-            },{
-                lat: 47.620505,
-                lng: -122.351178
-            },{
                 lat: 47.6207,
+                lng: -122.3511
+            }, {
+                lat: 47.6207,
+                lng: -122.351
+            }, {
+                lat: 47.62017,
                 lng: -122.3511
             }]
         };
@@ -61,5 +61,9 @@ export class Waypoints extends React.Component {
         return (
             <li className="waypoint">{waypoint.lat}, {waypoint.lng}</li>
         );
+    }
+
+    getWaypoints() {
+        return this.state.waypoints;
     }
 }

@@ -125,4 +125,8 @@ export class ThreeDModel extends React.Component {
             expanded: !this.state.expanded
         });
     }
+
+    setPosition(position) {
+
+    }
 }
