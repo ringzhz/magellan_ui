@@ -13,7 +13,6 @@ const RAD_PER_DEG = Math.PI / 180;
 export class PilotBoard extends React.Component {
     constructor() {
         super(arguments);
-        this._posHistory = []; //TODO: eww
 
         this.state = {
             s3Status: 'Disconnected', //TODO: Enumify
@@ -195,11 +194,17 @@ export class PilotBoard extends React.Component {
                 } else if(adjustment < -5) {
                     adjustment = -5;
                 }
+                // I can't figure out to stop this from oscillating between 2 values every once and a while.
+                // so have this! TODO: HAX
+                adjustment += Math.random()/3;
 
                 let requiredPrecision = this._distanceToCone / 10;
                 if (requiredPrecision < 0.05) { // 5 cm will do
                     requiredPrecision = 0.05;
                 }
+
+                console.log('requiredPrecision: '+requiredPrecision);
+                console.log('adjustment:'+adjustment);
                 if(Math.abs(this._pos.servoPosition) < 5 && Math.abs(x) < requiredPrecision) {
                     status = 'touch';
                     console.log('approaching');
