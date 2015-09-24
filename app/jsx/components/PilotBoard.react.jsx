@@ -98,6 +98,7 @@ export class PilotBoard extends React.Component {
             status = status.substr(prefix.length);
         }
         let distanceTraveled = 0;
+        let distanceToCone;
 
         theMegaSwitch:
         switch (status) {
@@ -142,7 +143,7 @@ export class PilotBoard extends React.Component {
                 if (!this.isPosInRange(this._pos)) {
                     status = 'out of bounds';
                 }
-                let distanceToCone = this._distanceToCone = this._pos.distanceTo(this._nextWaypoint);
+                distanceToCone = this._distanceToCone = this._pos.distanceTo(this._nextWaypoint);
                 distanceTraveled = distanceToCone * 0.2;
                 let angleToSearch = (PilotBoard.PIXY_CAM_RANGE - distanceToCone) * 90;
                 status = 'sweep';
@@ -220,7 +221,7 @@ export class PilotBoard extends React.Component {
                 if (!this.isPosInRange(this._pos)) {
                     status = 'out of bounds';
                 }
-                let distanceToCone = this._distanceToCone = this._pos.distanceTo(this._nextWaypoint);
+                distanceToCone = this._distanceToCone = this._pos.distanceTo(this._nextWaypoint);
                 if(distanceToCone < 0.05) {
                     status = 'backup';
                     console.log('TOUCH!');
