@@ -64,6 +64,7 @@ export class CourseMap extends React.Component {
                     streetViewControl={false}
                     mapTypeControl={false}
                     center={state.origin}>
+                    onClick={this.onClick.bind(this)}
                     <OriginMarker position={state.origin} ref="originMarker" icon={MapMarker.ORIGIN_ICON}/>
                     {locationMarkers}
                     {waypointMarkers}
@@ -72,11 +73,10 @@ export class CourseMap extends React.Component {
         );
     }
 
-    static get STARTING_COORDS() {
-        return {
-            lat: 47.620505,
-            lng: -122.351178
-        };
+    onClick(event) {
+        if('function' === typeof this.props.onClick) {
+            this.props.onWaypointsChange(event);
+        }
     }
 
     getLatestCoord() {
@@ -123,5 +123,12 @@ export class CourseMap extends React.Component {
     }
     setWaypoints(waypoints) {
         this.setState({waypoints});
+    }
+
+    static get STARTING_COORDS() {
+        return {
+            lat: 47.620505,
+            lng: -122.351178
+        };
     }
 }

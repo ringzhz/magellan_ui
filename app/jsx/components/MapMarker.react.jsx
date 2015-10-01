@@ -1,5 +1,5 @@
 import React from 'react/addons';
-import {GoogleMaps, Marker} from 'react-google-maps';
+import {GoogleMaps, Marker, InfoWindow} from 'react-google-maps';
 import _ from 'lodash';
 
 export class MapMarker extends React.Component {
@@ -40,7 +40,7 @@ export class MapMarker extends React.Component {
         let len = locationHistory.length;
         //TODO: can you control z-index?
         let locationMarkers = (locationHistory || []).map((location) => {
-            let icon = MapMarker.VISITED_ICON;
+            let icon = MapMarker.ROBOT_ICON;
             let coeff = (++i*2/len)/2;
             let className = 'location-history-marker';
             if (coeff < 0.4) {
@@ -70,11 +70,28 @@ export class MapMarker extends React.Component {
     }
 
     static fromWaypoints(waypoints) {
+        let refIdx = 0;
+        let markerLabel = 0;
         return waypoints.map((waypoint) => {
+            let ref = 'marker_'+refIdx++;
+            let icon = MapMarker.WAYPOINT_ICON;
+            if(waypoint.isVisited) {
+                icon = MapMarker.VISITED_ICON;
+            } else if(waypoint.isCone) {
+                icon = MapMarker.CONE_ICON;
+                markerLabel++;
+            } else {
+                markerLabel++;
+            }
             return (
-                <Marker className="waypoint-marker"
+                <Marker
+                    key={ref}
+                    ref={ref}
+                    className="waypoint-marker"
                     position={waypoint}
-                    icon={MapMarker.WAYPOINT_ICON} />
+                    icon={icon}
+                    label={''+markerLabel}>
+                </Marker>
             );
         });
     }
@@ -91,7 +108,18 @@ export class MapMarker extends React.Component {
             draggable: true
         };
     }
-    static get WAYPOINT_ICON() {
+    static get ROBOT_ICON() {
+        return {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'white',
+            fillOpacity: .4,
+            scale: 4.5,
+            strokeColor: 'white',
+            strokeWeight: 1,
+            draggable: true
+        };
+    }
+    static get CONE_ICON() {
         const VISITED_ICON = {
             path: google.maps.SymbolPath.CIRCLE,
             fillColor: 'orange',
@@ -110,10 +138,26 @@ export class MapMarker extends React.Component {
     static get VISITED_ICON() {
         const VISITED_ICON = {
             path: google.maps.SymbolPath.CIRCLE,
-            fillColor: 'red',
+            fillColor: 'orange',
             fillOpacity: .4,
             scale: 4.5,
             strokeWeight: 0
+        };
+        let icon = {};
+        _.each(VISITED_ICON, (value, key) => {
+            icon[key] = value;
+        });
+        return icon;
+    }
+
+    static get WAYPOINT_ICON() {
+        const VISITED_ICON = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'yellow',
+            fillOpacity: .8,
+            scale: 7,
+            strokeWeight: 0,
+            labelClass: 'marker-label'
         };
         let icon = {};
         _.each(VISITED_ICON, (value, key) => {

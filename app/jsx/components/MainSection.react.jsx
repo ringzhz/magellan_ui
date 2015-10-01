@@ -48,7 +48,7 @@ export class MainSection extends React.Component {
 
     waypointsDidChange(waypoints) {
         this.refs.courseMap.setWaypoints(waypoints);
-        this.refs.pilotBoard.setWaypoints(waypoints);
+        //this.refs.pilotBoard.setWaypoints(waypoints);
     }
 
 
