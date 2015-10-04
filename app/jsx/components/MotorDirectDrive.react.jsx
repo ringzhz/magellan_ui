@@ -3,9 +3,6 @@ import _ from 'lodash';
 
 import {SliderTextInput} from './SliderTextInput.react.jsx';
 const LOCAL_STORAGE_KEY = '_turnControlsState';
-
-const TURN_TO_URL = 'http://192.168.0.126:3000/api/robots/cylon_magellan/commands/turnTo';
-
 export class TurnControls extends React.Component {
 
     constructor() {
@@ -54,7 +51,7 @@ export class TurnControls extends React.Component {
                     onChange={this.onMotorInputChanged.bind(this)}
                     min={0}
                     max={100}/>
-                <button onClick={this.turnToAngle.bind(this)}>Turn To Angle</button>
+                <button onClick={null}>Turn To Angle</button>
             </div>
         );
 
@@ -71,18 +68,6 @@ export class TurnControls extends React.Component {
             expanded: !this.state.expanded
         });
     }
-
-    turnToAngle() {
-        $.ajax({
-            url: TURN_TO_URL,
-            method: 'POST',
-            data: {
-                pow: this.state.motorPower,
-                angle: this.state.angle
-            }
-        });
-    }
-
     onAngleInputChanged(event) {
         let angle = event.target.value;
         this.setState({

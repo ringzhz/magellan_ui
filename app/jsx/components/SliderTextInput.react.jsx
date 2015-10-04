@@ -31,14 +31,14 @@ export class SliderTextInput extends React.Component {
                 <input ref='text'
                        type='text'
                        value={this.props.value}
-                       onChange={this.onInputChanged.bind(this)}/>
+                       onChange={this.onInputChanged.bind(this)} />
                 <input ref='slider'
                        type='range'
                        min={this.props.min}
                        max={this.props.max}
+                       step={this.props.step}
                        value={this.props.value}
-                       onChange={this.onInputChanged.bind(this)}
-                       step={1}/>
+                       onChange={this.onInputChanged.bind(this)} />
             </div>
         );
     }

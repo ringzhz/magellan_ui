@@ -43,9 +43,7 @@ export class Waypoints extends React.Component {
         let text = '';
         let id = 0;
         this.state.waypoints.forEach((waypoint) => {
-            //if(null === this.state.draggingId) {
-                waypoint.id = id++;
-            //}
+            waypoint.id = id++;
             text += waypoint.lat + ', ' + waypoint.lng + '\n';
         });
         return (

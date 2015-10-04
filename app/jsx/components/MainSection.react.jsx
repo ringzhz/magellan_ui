@@ -8,6 +8,8 @@ import {TurnControls} from './TurnControls.react.jsx';
 import {ThreeDModel} from './ThreeDModel.react.jsx';
 import {Waypoints} from './Waypoints.react.jsx';
 import {VisionMast} from './VisionMast.react.jsx';
+import {MotorPidMonitor} from './MotorPidMonitor.react.jsx';
+import {HeadingPidMonitor} from './HeadingPidMonitor.react.jsx';
 
 
 export class MainSection extends React.Component {
@@ -38,10 +40,12 @@ export class MainSection extends React.Component {
                 <ThreeDModel ref="3dModel"/>
                 <PilotBoard ref="pilotBoard" onApiData={this.onPilotBoardData.bind(this)} waypointsProvider={waypointsProvider}/>
                 <CourseMap ref="courseMap"/>
-                <Compass ref="compass" targetAngle={this.state.targetAngle}/>
-                <TurnControls ref="turnControls" onAngleInputChanged={this.onTargetAngleChange.bind(this)}/>
                 <MotorTuner ref="motorTuner"/>
                 <Waypoints ref="waypoints" onWaypointsChange={this.waypointsDidChange.bind(this)}/>
+                <MotorPidMonitor ref="motorPidMonitor" />
+                <Compass ref="compass" targetAngle={this.state.targetAngle}/>
+                <TurnControls ref="turnControls" onAngleInputChanged={this.onTargetAngleChange.bind(this)}/>
+                <HeadingPidMonitor ref="headingPidMonitor" />
             </div>
         );
     }
@@ -76,16 +80,19 @@ export class MainSection extends React.Component {
         this.refs.courseMap.addLatestCoord(pose);
         this.refs.pilotBoard.setStatus(pilotBoardStatus);
         this.refs.visionMast.setState(visionMast);
+        this.refs.motorPidMonitor.setData(data.device.details.motorPids);
+        this.refs.headingPidMonitor.setData(data.device.details.headingPids);
+
 
         //TODO: hehe. stop that
         this.refs.motorTuner.setMotorTuningEnabled(pilotBoardStatus === 'Board Ready. Driver awaiting commands.');
     }
 
     defaultOnApiError(jqXHR, textStatus, err) {
-        console.log('error fetching bot status:\n\t' + textStatus);
-        console.error(err);
+        console.log('bot offline');//:\n\t' + textStatus);
+        //console.error(err);
 
         this.refs.pilotBoard.setS3Status('Disconnected');
-        this.refs.motorTuner.setMotorTuningEnabled(false);
+        //this.refs.motorTuner.setMotorTuningEnabled(false);
     }
 }
