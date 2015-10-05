@@ -18,7 +18,6 @@ export class CourseMap extends React.Component {
         super(args);
 
         this.state = {
-            locationHistory: [],
             origin: CourseMap.STARTING_COORDS,
             currentLocation: CourseMap.STARTING_COORDS,
             coords: {

@@ -64,6 +64,7 @@ export class HeadingPidMonitor extends React.Component {
         let chartData = _.map(readings, (reading, ts) => {
             return [
                 new Date(+ts),
+                +reading.time,
                 +reading.Error,
                 +reading.PrevError,
                 +reading.Adjustment,
@@ -85,7 +86,7 @@ export class HeadingPidMonitor extends React.Component {
             maxTs = chartData[chartData.length - 1][0];
         }
 
-        chartData.unshift(['time', 'error', 'prevError', 'adj',
+        chartData.unshift(['time','duration', 'error', 'prevError', 'adj',
             //{label:'i',autoScale:false},
             'd']);
 
@@ -93,7 +94,7 @@ export class HeadingPidMonitor extends React.Component {
         let options = {
             title: 'M1',
             hAxis: {title: 'time', minValue: minTs, maxValue: maxTs},
-            vAxis: {title: 'v', minValue: -100, maxValue: 100, autoScale: false}
+            vAxis: {title: 'v', minValue: -100, maxValue: 100}
         };
 
 

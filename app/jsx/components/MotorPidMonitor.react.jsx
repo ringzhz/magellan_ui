@@ -35,7 +35,7 @@ export class MotorPidMonitor extends React.Component {
                 url: SET_POWER_URL,
                 method: 'POST',
                 data: {
-                    power: 0.00001 + Number(state.motorPower)
+                    power: 0.0001 - Number(state.motorPower)
                 }
             });
         }
@@ -64,13 +64,15 @@ export class MotorPidMonitor extends React.Component {
             return [
                 new Date(+ts),
                 +reading.T1,
-                +reading.time,
+                //+reading.time,
                 +reading.V1,
                 +reading.E1,
                 //+reading.E1prime,
-                +reading.I1,
+                //+reading.I1,
                 +reading.D1,
-                +reading.PW1
+                +reading.PW1,
+                +reading.headingError
+                //+reading.dist
             ];
         });
 
@@ -86,9 +88,10 @@ export class MotorPidMonitor extends React.Component {
             maxTs = chartData[chartData.length - 1][0];
         }
 
-        chartData.unshift(['time', 'T1', 'tickLength', 'V1', 'E1', 'I1',
+        chartData.unshift(['time', 'T1', 'V1', 'E1',
+            //'I1',
             'D1',
-            'PW1']);
+            'PW1','headingError']);
 
 
         let options = {
@@ -124,7 +127,7 @@ export class MotorPidMonitor extends React.Component {
                         min={0}
                         step={5}
                         max={100}/>
-                    <button onClick={this.goDistance.bind(this)}>Go 5 Meters!</button>
+                    <button onClick={this.goDistance.bind(this)}>Go 1 Meters!</button>
                 </div>
             );
 
