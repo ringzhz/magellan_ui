@@ -14,7 +14,7 @@ const M_PER_DEGREE_LNG = 75170.9948697914;
 const MAX_LOCATION_MARKERS = 100;
 
 export class CourseMap extends React.Component {
-    constructor (args) {
+    constructor(args) {
         super(args);
 
         this.state = {
@@ -31,14 +31,17 @@ export class CourseMap extends React.Component {
             waypoints: []
         };
     }
-    render () {
-        const {state} = this;
+
+    render() {
+        let {state} = this;
         const googleMapsApi = "undefined" !== typeof google ? google.maps : null;
 
         let locationMarkers = MapMarker.fromLocationHistory(state.locationHistory);
         let waypointMarkers = MapMarker.fromWaypoints(state.waypoints);
         let formattedCoords = this.state.coords.x.toPrecision(2) + ',' + this.state.coords.y.toPrecision(2);
 
+
+        //onClick={this.onClick.bind(this)}>
         return (
             <div className="theMap">
                 <h3>{formattedCoords}</h3>
@@ -62,8 +65,9 @@ export class CourseMap extends React.Component {
                     navigationControl={false}
                     streetViewControl={false}
                     mapTypeControl={false}
+                    disableDoubleClickZoom={true}
+                    onClick={this.props.onClick}
                     center={state.origin}>
-                    onClick={this.onClick.bind(this)}
                     <OriginMarker position={state.origin} ref="originMarker" icon={MapMarker.ORIGIN_ICON}/>
                     {locationMarkers}
                     {waypointMarkers}
@@ -72,27 +76,28 @@ export class CourseMap extends React.Component {
         );
     }
 
-    onClick(event) {
-        if('function' === typeof this.props.onClick) {
-            this.props.onWaypointsChange(event);
-        }
-    }
+    //onClick(event) {
+    //    if ('function' === typeof this.props.onClick) {
+    //        this.props.onWaypointsChange(event);
+    //    }
+    //}
 
     getLatestCoord() {
         let locationHistory = this.state.locationHistory;
-        if(!locationHistory) {
+        if (!locationHistory) {
             return this.state.origin;
         }
-        return locationHistory[locationHistory.length-1].position;
+        return locationHistory[locationHistory.length - 1].position;
     }
+
     addLatestCoord(coords) {
         let newLocation = this.metersFromOriginToLatLng(coords);
-        if(newLocation.lat == this.state.currentLocation.lat && newLocation.lng == this.state.currentLocation.lng) {
+        if (newLocation.lat == this.state.currentLocation.lat && newLocation.lng == this.state.currentLocation.lng) {
             // didn't move.
             return;
         }
         let locationHistory = this.state.locationHistory;
-        while(locationHistory.length > MAX_LOCATION_MARKERS) {
+        while (locationHistory.length > MAX_LOCATION_MARKERS) {
             locationHistory.shift();
         }
         locationHistory.push({
@@ -110,18 +115,24 @@ export class CourseMap extends React.Component {
 
     metersFromOriginToLatLng(mFromOrigin) {
         return {
-            lat: this.state.origin.lat + mFromOrigin.y/M_PER_DEGREE_LAT,
-            lng: this.state.origin.lng + mFromOrigin.x/M_PER_DEGREE_LNG
+            lat: this.state.origin.lat + mFromOrigin.y / M_PER_DEGREE_LAT,
+            lng: this.state.origin.lng + mFromOrigin.x / M_PER_DEGREE_LNG
         }
     }
+
     latLngToMetersFromOrigin(latLng) {
         return {
-            x: (latLng.lng - this.state.origin.lng)*M_PER_DEGREE_LNG,
-            y: (latLng.lat - this.state.origin.lat)*M_PER_DEGREE_LAT
+            x: (latLng.lng - this.state.origin.lng) * M_PER_DEGREE_LNG,
+            y: (latLng.lat - this.state.origin.lat) * M_PER_DEGREE_LAT
         };
     }
+
     setWaypoints(waypoints) {
         this.setState({waypoints});
+
+        //FIXME: why do i need to do this?
+        // for some reason waypoints === this.state.waypoints here?
+        this.render();
     }
 
     static get STARTING_COORDS() {

@@ -39,7 +39,7 @@ export class MainSection extends React.Component {
                 <VisionMast ref="visionMast" />
                 <ThreeDModel ref="3dModel"/>
                 <PilotBoard ref="pilotBoard" onApiData={this.onPilotBoardData.bind(this)} waypointsProvider={waypointsProvider}/>
-                <CourseMap ref="courseMap"/>
+                <CourseMap ref="courseMap" onClick={this.mapClick.bind(this)} />
                 <MotorTuner ref="motorTuner"/>
                 <Waypoints ref="waypoints" onWaypointsChange={this.waypointsDidChange.bind(this)}/>
                 <MotorPidMonitor ref="motorPidMonitor" />
@@ -50,8 +50,22 @@ export class MainSection extends React.Component {
         );
     }
 
+    mapClick(event) {
+        console.log(event);
+        let latLng = event.latLng;
+        let lat = latLng.lat();
+        let lng = latLng.lng();
+        let waypoint = {
+            lat,
+            lng
+        };
+        this.refs.waypoints.addWaypoint(waypoint);
+    }
+
     waypointsDidChange(waypoints) {
-        this.refs.courseMap.setWaypoints(waypoints);
+        if(this.refs.courseMap) {
+            this.refs.courseMap.setWaypoints(waypoints);
+        }
         //this.refs.pilotBoard.setWaypoints(waypoints);
     }
 

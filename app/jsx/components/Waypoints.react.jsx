@@ -44,8 +44,12 @@ export class Waypoints extends React.Component {
         let id = 0;
         this.state.waypoints.forEach((waypoint) => {
             waypoint.id = id++;
+            if(waypoint.isCone) {
+                text += 'C ';
+            }
             text += waypoint.lat + ', ' + waypoint.lng + '\n';
         });
+
         return (
             <div>
                 <h3 style={{width:'200px',textAlign:'center'}}>waypoints</h3>
@@ -74,13 +78,23 @@ export class Waypoints extends React.Component {
     textAreaDidChange(evt) {
         let txt = evt.target.value;
         let lines = txt.split('\n');
-        let waypoints = _.chain(lines).map((line) => {
+        let waypoints = _.
+            chain(lines).
+            filter((line) => {
+                return !!/^[^0-9]*[0-9\., \-]+/.exec(line)
+            }).
+            map((line) => {
+            let cone = /^[Cc](.+)/.exec(line);
+
+            line = /^[^0-9]*(.+)/.exec(line)[1];
             let coords = line.split(',');
+            let isCone = !!cone;
             if (coords && coords.length === 2) {
                 try {
                     return {
                         lat: Number(coords[0]),
-                        lng: Number(coords[1])
+                        lng: Number(coords[1]),
+                        isCone
                     };
                 } catch (error) {
                     console.log('Couldn\'t parse coordinate: ' + coords);
@@ -92,7 +106,10 @@ export class Waypoints extends React.Component {
             return !!coord;
         }).value();
         this.setState({waypoints});
-        if (('function' === typeof this.props.onWaypointsChange)) {
+
+
+        //TODO: this should be an event
+        if(('function' === typeof this.props.onWaypointsChange)) {
             this.props.onWaypointsChange(waypoints);
         }
     }
@@ -112,6 +129,18 @@ export class Waypoints extends React.Component {
                 onDragStart={this.dragStart.bind(this)}
                 >{waypoint.lat}&nbsp;{waypoint.lng}</li>
         );
+    }
+
+    addWaypoint(waypoint) {
+        let waypoints = this.state.waypoints;
+        waypoints.push(waypoint);
+        this.setState({
+            waypoints
+        });
+
+        if(('function' === typeof this.props.onWaypointsChange)) {
+            this.props.onWaypointsChange(waypoints);
+        }
     }
 
     getWaypoints() {

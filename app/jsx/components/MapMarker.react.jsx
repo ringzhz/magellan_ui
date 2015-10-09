@@ -25,7 +25,6 @@ export class MapMarker extends React.Component {
         // only origin is draggable
         this.draggable = this.icon === MapMarker.ORIGIN_ICON;
         this.className = this.draggable ? "originMarker" : "locationMarker";
-
     }
 
     render() {
@@ -58,6 +57,7 @@ export class MapMarker extends React.Component {
             return (
                 <Marker className={className}
                         position={location.position}
+                        draggable={this.draggable}
                         icon={icon} />
             );
         });
@@ -104,8 +104,7 @@ export class MapMarker extends React.Component {
             fillOpacity: .4,
             scale: 4.5,
             strokeColor: 'white',
-            strokeWeight: 1,
-            draggable: true
+            strokeWeight: 1
         };
     }
     static get ROBOT_ICON() {
@@ -115,8 +114,7 @@ export class MapMarker extends React.Component {
             fillOpacity: .4,
             scale: 4.5,
             strokeColor: 'white',
-            strokeWeight: 1,
-            draggable: true
+            strokeWeight: 1
         };
     }
     static get CONE_ICON() {
