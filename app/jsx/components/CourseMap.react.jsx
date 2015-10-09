@@ -129,10 +129,6 @@ export class CourseMap extends React.Component {
 
     setWaypoints(waypoints) {
         this.setState({waypoints});
-
-        //FIXME: why do i need to do this?
-        // for some reason waypoints === this.state.waypoints here?
-        this.render();
     }
 
     static get STARTING_COORDS() {
