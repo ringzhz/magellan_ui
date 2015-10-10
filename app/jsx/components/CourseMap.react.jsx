@@ -41,7 +41,9 @@ export class CourseMap extends React.Component {
         let formattedCoords = this.state.coords.x.toPrecision(2) + ',' + this.state.coords.y.toPrecision(2);
 
 
-        //onClick={this.onClick.bind(this)}>
+        // onClick={this.onClick.bind(this)}>
+        // zoom={19}
+
         return (
             <div className="theMap">
                 <h3>{formattedCoords}</h3>
@@ -56,7 +58,7 @@ export class CourseMap extends React.Component {
                     ref="map"
                     googleMapsApi={googleMapsApi}
                     tilt={0}
-                    zoom={19}
+                    zoom={23}
                     mapTypeId={google.maps.MapTypeId.SATELLITE}
                     draggable={false}
                     panControl={false}
@@ -75,12 +77,6 @@ export class CourseMap extends React.Component {
             </div>
         );
     }
-
-    //onClick(event) {
-    //    if ('function' === typeof this.props.onClick) {
-    //        this.props.onWaypointsChange(event);
-    //    }
-    //}
 
     getLatestCoord() {
         let locationHistory = this.state.locationHistory;
@@ -121,9 +117,11 @@ export class CourseMap extends React.Component {
     }
 
     latLngToMetersFromOrigin(latLng) {
+        //TODO: this shouldn't know about no stinking cones.
         return {
             x: (latLng.lng - this.state.origin.lng) * M_PER_DEGREE_LNG,
-            y: (latLng.lat - this.state.origin.lat) * M_PER_DEGREE_LAT
+            y: (latLng.lat - this.state.origin.lat) * M_PER_DEGREE_LAT,
+            isCone: !!latLng.isCone
         };
     }
 

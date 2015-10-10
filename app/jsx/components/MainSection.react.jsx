@@ -31,21 +31,23 @@ export class MainSection extends React.Component {
         this.refs.pilotBoard.setCoordMapper(coordMapper);
     }
 
+    /*
+     <MotorPidMonitor ref="motorPidMonitor" />
+     <HeadingPidMonitor ref="headingPidMonitor" />
+     <ThreeDModel ref="3dModel"/>
+    */
     render() {
         window.TC = TurnControls;
         let waypointsProvider;
         return (
             <div className="main-section">
                 <VisionMast ref="visionMast" />
-                <ThreeDModel ref="3dModel"/>
                 <PilotBoard ref="pilotBoard" onApiData={this.onPilotBoardData.bind(this)} waypointsProvider={waypointsProvider}/>
                 <CourseMap ref="courseMap" onClick={this.mapClick.bind(this)} />
                 <MotorTuner ref="motorTuner"/>
                 <Waypoints ref="waypoints" onWaypointsChange={this.waypointsDidChange.bind(this)}/>
-                <MotorPidMonitor ref="motorPidMonitor" />
                 <Compass ref="compass" targetAngle={this.state.targetAngle}/>
                 <TurnControls ref="turnControls" onAngleInputChanged={this.onTargetAngleChange.bind(this)}/>
-                <HeadingPidMonitor ref="headingPidMonitor" />
             </div>
         );
     }
@@ -94,8 +96,8 @@ export class MainSection extends React.Component {
         this.refs.courseMap.addLatestCoord(pose);
         this.refs.pilotBoard.setStatus(pilotBoardStatus);
         this.refs.visionMast.setState(visionMast);
-        this.refs.motorPidMonitor.setData(data.device.details.motorPids);
-        this.refs.headingPidMonitor.setData(data.device.details.headingPids);
+        //this.refs.motorPidMonitor.setData(data.device.details.motorPids);
+        //this.refs.headingPidMonitor.setData(data.device.details.headingPids);
 
 
         //TODO: hehe. stop that

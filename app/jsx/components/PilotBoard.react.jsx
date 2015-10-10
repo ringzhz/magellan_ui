@@ -36,7 +36,7 @@ export class PilotBoard extends React.Component {
                 <br />
                 <div>
                     <h7>Waypoints set: </h7>
-                    <span>{this.state.waypoints}</span>
+                    <span>{JSON.stringify(this.state.waypoints)}</span>
                 </div>
                 <button disabled={!beginButtonEnabled} onClick={this.startDriving.bind(this)}>Begin</button>
             </div>
